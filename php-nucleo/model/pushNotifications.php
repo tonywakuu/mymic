@@ -1,0 +1,118 @@
+<?php
+
+// API access key from Google API's Console
+define('ANDROID_API_ACCESS_KEY', 'AIzaSyBI1UCpp6Pf0obx2xWIRkmMUwmL2qN8h2o');
+//IOS pass phrase
+define('IOS_PASS_PHRASE', 'YOUR PHRASE GOES HERE');
+//Path to iOS certificate
+define('IOS_CERTIFICATE_PATH', realpath(__DIR__ . '/..') . '/config/<cretificate.pem name goes here>');
+
+/**
+ * Class notification to send the push notifications to the registration ids
+ */
+class pushNotifications {
+
+    /**
+     * Function to send Push notifications to the android devices
+     * @param type $registrationIds
+     * @param type $msg
+     * @return boolean
+     */
+    public function pushAndroidNotification($registrationIds, $message) {
+//        $registrationIds = array('APA91bG0nOBP_IO_MNr3X-6z00XM27HIrARqndzvrIKPmrRyaDlX889TtuwvqGeZ_T82RAsHlwF5yEKhvsQXAM_9as_imp5JEifzICPX8nREWvo4XvtECIrk7XtrkFBl9N5YA8paS3t6');
+        // prepare the bundle
+        $msg = array
+            (
+           'message' => $message,
+           'title' => 'test title',
+           'subtitle' => 'test subtitle',
+           'tickerText' => 'Ticker text',
+            'vibrate' => 1,
+            'sound' => 1,
+            'largeIcon' => 'large_icon',
+            'smallIcon' => 'small_icon'
+        );
+        $fields = array
+            (
+            'registration_ids' => $registrationIds,
+            'data' => $msg
+        );
+
+        $headers = array
+            (
+            'Authorization: key=' . ANDROID_API_ACCESS_KEY,
+            'Content-Type: application/json'
+        );
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://android.googleapis.com/gcm/send');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+        $result = curl_exec($ch);
+       
+        curl_close($ch);
+        echo "<pre />";
+        print_r($result);
+        die;
+        
+    }
+
+    /**
+     * Function to send Push notifications to the iOS devices
+     * @param string $deviceToken
+     * @param type $message
+     * @param type $badge
+     */
+    public function pushIosNotification($deviceToken, $message, $badge = NULL) {
+        // My device token here (without spaces):
+//        $deviceToken = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
+        // My private key's passphrase here:
+        $passphrase = IOS_PASS_PHRASE;
+
+        // My alert message here:
+        //        $message = 'New Push Notification!';
+        //badge
+        $badge = isset($badge1) ? $badge : 1;
+
+        $ctx = stream_context_create();
+        stream_context_set_option($ctx, 'ssl', 'local_cert', 'IOS_CERTIFICATE_PATH');
+        stream_context_set_option($ctx, 'ssl', 'passphrase', $passphrase);
+
+        // Open a connection to the APNS server
+        $fp = stream_socket_client(
+                'ssl://gateway.sandbox.push.apple.com:2195', $err, $errstr, 60, STREAM_CLIENT_CONNECT | STREAM_CLIENT_PERSISTENT, $ctx);
+
+        if (!$fp)
+            exit("Failed to connect: $err $errstr" . PHP_EOL);
+
+        echo 'Connected to APNS' . PHP_EOL;
+
+        // Create the payload body
+        $body['aps'] = array(
+            'alert' => $message,
+            'badge' => $badge,
+            'sound' => ''
+        );
+
+        // Encode the payload as JSON
+        $payload = json_encode($body);
+
+        // Build the binary notification
+        $msg = chr(0) . pack('n', 32) . pack('H*', $deviceToken) . pack('n', strlen($payload)) . $payload;
+
+        // Send it to the server
+        $result = fwrite($fp, $msg, strlen($msg));
+
+        if (!$result)
+            return $result;
+        else
+            return FALSE;
+
+        // Close the connection to the server
+        fclose($fp);
+    }
+
+}

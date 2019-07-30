@@ -1,0 +1,31 @@
+<?php
+require_once realpath(__DIR__) . '/config/providerConfig.php';
+$configObj = new providerConfig();
+$config = $configObj->getConfig();
+?>
+<link rel="stylesheet" type="text/css" href="<?php echo $config['app_base_url']; ?>/utils/css/style.css">
+<?php $flag = isset($_GET['success']) ? $_GET['success'] : ''; ?>
+<div class="container">
+    <?php if ($flag == 'changed') { ?>
+        <center>
+            <div id="banner">
+                Password changed successfully, please login using new password!
+            </div>
+        </center>
+
+    <?php } else if ($flag == 'expired') { ?>
+        <div id="banner" class="bannerError">
+            <center>
+                Link you have tried to access is either expired or already used!
+            </center>
+        </div>
+
+    <?php } else { ?>
+        <div id="banner" class="bannerError">
+            <center>
+                Direct access to this page is not allowed!
+            </center>
+        </div>
+    <?php } ?>
+</div>
+

@@ -1,0 +1,13 @@
+{
+  "name": "Ravel",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "socket.io": "latest",
+    "express": "3.3.5",
+    "jade": "*"
+  }
+}

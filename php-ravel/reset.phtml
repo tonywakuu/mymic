@@ -1,0 +1,69 @@
+<?php
+/**
+ * Include Required utilities and libraries
+ */
+require_once realpath(__DIR__) . '/model/userModel.php';
+require_once realpath(__DIR__) . '/config/providerConfig.php';
+$hash = isset($_GET['auth_hash']) ? $_GET['auth_hash'] : 0;
+$configObj = new providerConfig();
+$config = $configObj->getConfig();
+$userModel = new userModel();
+$validHash = $userModel->searchHash($hash);
+?>
+
+<link rel="stylesheet" type="text/css" href="<?php echo $config['app_base_url']; ?>/utils/css/style.css">
+<script src="<?php echo $config['app_base_url']; ?>/utils/js/jquery-1.11.1.min.js"></script>
+<script src="<?php echo $config['app_base_url']; ?>/utils/js/jquery.validate.min.js"></script>
+<script src="<?php echo $config['app_base_url']; ?>/utils/js/additional-methods.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $("#myform").validate({
+            rules: {
+                password: {
+                    required: true,
+                    minlength: 6
+                },
+                password_again: {
+                    equalTo: "#password"
+                }
+            }
+        });
+    });
+    // just for the demos, avoids form submit
+
+</script>
+<title>Reset Password</title>
+
+
+<div class="container">
+    <?php if ($hash) { ?>
+        <?php if (!empty($validHash)) { ?>
+            <div class="login-form">
+                <h1>Reset Password</h1>
+                <form id="myform" action="<?php echo $config['app_base_url']; ?>/utils/resetPassword.php" method="POST">
+                    <input type="hidden" id="email" name="email" value="<?php echo $validHash['email'] ?>"/>
+                    <input type="hidden" id="hash" name="hash" value="<?php echo $hash ?>"/>
+                    <input id="password" name="password" type="password" placeholder="password"/>
+                    <input id="password_again" name="password_again" type="password" placeholder="confirm password"/>
+                    <input type="submit" value="Reset">
+                </form>
+            </div>
+        <?php } else { ?>
+            <div id="banner" class="bannerError">
+                <center>
+                    This link is either invalid or already used!
+                </center>
+            </div>
+
+            <?php
+        }
+    } else {
+        ?>
+        <div id="banner" class="bannerError">
+            <center>
+                This is not a valid link!
+            </center>
+        </div>
+    <?php } ?>
+</div>

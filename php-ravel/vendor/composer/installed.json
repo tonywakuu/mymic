@@ -1,0 +1,106 @@
+[
+    {
+        "name": "hybridauth/hybridauth",
+        "version": "3.0.0.x-dev",
+        "version_normalized": "3.0.0.9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/hybridauth/hybridauth.git",
+            "reference": "a34478a643d31434014aaedfc07909a3c4d4b1f1"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/hybridauth/hybridauth/zipball/a34478a643d31434014aaedfc07909a3c4d4b1f1",
+            "reference": "a34478a643d31434014aaedfc07909a3c4d4b1f1",
+            "shasum": ""
+        },
+        "require": {
+            "ext-curl": "*",
+            "php": ">=5.3.0"
+        },
+        "time": "2014-11-15T18:06:52+00:00",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "psr-0": {
+                "Hybridauth": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "(MIT or GPL-3.0+)"
+        ],
+        "authors": [
+            {
+                "name": "Miled",
+                "email": "hybridauth@gmail.com"
+            }
+        ],
+        "description": "Open source social sign on PHP library.",
+        "homepage": "http://hybridauth.sourceforge.net",
+        "keywords": [
+            "OpenId",
+            "facebook",
+            "google",
+            "hybridauth",
+            "login",
+            "oauth",
+            "social",
+            "twitter",
+            "yahoo"
+        ]
+    },
+    {
+        "name": "squizlabs/php_codesniffer",
+        "version": "3.4.2",
+        "version_normalized": "3.4.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
+            "reference": "b8a7362af1cc1aadb5bd36c3defc4dda2cf5f0a8"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/b8a7362af1cc1aadb5bd36c3defc4dda2cf5f0a8",
+            "reference": "b8a7362af1cc1aadb5bd36c3defc4dda2cf5f0a8",
+            "shasum": ""
+        },
+        "require": {
+            "ext-simplexml": "*",
+            "ext-tokenizer": "*",
+            "ext-xmlwriter": "*",
+            "php": ">=5.4.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0"
+        },
+        "time": "2019-04-10T23:49:02+00:00",
+        "bin": [
+            "bin/phpcs",
+            "bin/phpcbf"
+        ],
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "3.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Greg Sherwood",
+                "role": "lead"
+            }
+        ],
+        "description": "PHP_CodeSniffer tokenizes PHP, JavaScript and CSS files and detects violations of a defined set of coding standards.",
+        "homepage": "https://github.com/squizlabs/PHP_CodeSniffer",
+        "keywords": [
+            "phpcs",
+            "standards"
+        ]
+    }
+]
